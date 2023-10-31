@@ -1,23 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Player } from './components/Player/Player';
+import "./App.css"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='w-100 vh-100 d-flex flex-column align-items-center' style={{paddingTop:"23%"}}>
+      <Player/>
+      <div className='bg-dark' style={{height:"2px", width:"106%"}}></div>
+      <div className='background'>
+      </div>
     </div>
   );
 }
