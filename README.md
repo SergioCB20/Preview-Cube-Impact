@@ -1,4 +1,4 @@
-# El proyecto es: Un videojuego
+# El proyecto es: Cube Impact preview
 
 # Getting Started with Create React App
 
