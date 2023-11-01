@@ -11,7 +11,6 @@
 .cubo{
     width: 150px;
     height: 150px;
-    animation: saltar 1s ease-in infinite;
     background-color: aqua;
     border: 2px solid black;
 }
@@ -67,6 +66,29 @@
     bottom: -70px;
     width: 100%;
 }
+
+.erizo{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    z-index: 10;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) all;
+}
+
+.erizo img:nth-child(1){
+    position: absolute;
+    width: 100%;
+}
+
+.erizo img:nth-child(2){
+    position: absolute;
+    top: 30px;
+    left: -15px;
+    width: 100%;
+    z-index: 15;
+}
+
+
 
 @keyframes saltar {
     0%{

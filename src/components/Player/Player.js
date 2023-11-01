@@ -2,11 +2,34 @@ import React, { useState, useEffect } from "react";
 import "./Player.css";
 import logo1 from "../../assets/imagenes/logo-1.png";
 import nave1 from "../../assets/imagenes/nave-1.png";
-import ufo1 from "../../assets/imagenes/ufo-1.png"
+import ufo1 from "../../assets/imagenes/ufo-1.png";
+import erizoCu1 from "../../assets/imagenes/erizo-cuerpo-1.png";
+import erizoAc1 from "../../assets/imagenes/erizo-accesorio-1.png";
 
 function Cubo(){
+
+  const [saltar,setSaltar] = useState(false)
+
+  useEffect(()=>{
+
+    const sleep = (ms)=>{
+      return new Promise(resolve => setTimeout(resolve,ms))
+    }
+
+    const handleClick = async ()=>{
+      setSaltar(true)
+      await sleep(1000)
+      setSaltar(false)
+    }
+
+    document.addEventListener("click",handleClick)
+    return()=>{
+      document.removeEventListener("click",handleClick)
+    }
+  },[])
+
     return(
-        <div className="cubo">
+        <div className="cubo" style={{animation: saltar?"saltar 1s ease-in infinite":"none"}}>
             <img src={logo1} alt="Logo 1" />
         </div>
     );
@@ -47,7 +70,7 @@ function Nave(){
       clearInterval(intervalId); // Detener el intervalo actual (si lo hay)
       intervalId = setInterval(() => {
         setMovement((prevMovement) => moverAbajo(prevMovement));
-      }, 50);
+      }, 30);
     };
 
     // Agrega event listeners para los eventos del ratón
@@ -72,7 +95,7 @@ function Nave(){
 
 function NavModes({ onSelect }) {
     return (
-      <div className="btn-group w-50" role="group" aria-label="Basic outlined example" style={{ height: "150px",
+      <div className="btn-group w-50" role="group" aria-label="Basic outlined example" style={{ height: "200px",
        display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <button
           type="button"
@@ -94,6 +117,13 @@ function NavModes({ onSelect }) {
           onClick={() => onSelect("ufo")}
         >
           UFO
+        </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => onSelect("erizo")}
+        >
+          Erizo
         </button>
       </div>
     );
@@ -135,7 +165,7 @@ function Ufo(){
         document.removeEventListener("click", handleClick);
         clearInterval(intervalId);
       };
-    }, []);
+    }, []);//se ejecuta solo una vez el useEffect()
 
     useEffect(()=>{
       console.log(`El valor de movement: %d`,movement)
@@ -149,7 +179,22 @@ function Ufo(){
     )
   }
 
-  export function Player() {
+function Erizo(){
+  const [movement, setMovement] = useState(0)
+
+  useEffect(()=>{
+    
+  },[])
+
+  return(
+    <div className="erizo" style={{transform:`translateY(-${movement}px)`}}>
+      <img src={erizoCu1} alt="erizo cuerpo 1"/>
+      <img src={erizoAc1} alt="erizo accesorio 1"/>
+    </div>
+  );
+}
+
+export function Player() {
     const [selectedMode, setSelectedMode] = useState(null);
   
     return (
@@ -162,6 +207,7 @@ function Ufo(){
         {selectedMode === "cubo" && <Cubo />}
         {selectedMode === "nave" && <Nave />}
         {selectedMode === "ufo" && <Ufo />}
+        {selectedMode === "erizo" && <Erizo />}
       </>
     );
   }
