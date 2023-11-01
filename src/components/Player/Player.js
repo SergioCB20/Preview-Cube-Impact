@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Player.css";
 import logo1 from "../../assets/imagenes/logo-1.png";
 import nave1 from "../../assets/imagenes/nave-1.png";
-
+import ufo1 from "../../assets/imagenes/ufo-1.png"
 
 function Cubo(){
     return(
@@ -40,14 +40,14 @@ function Nave(){
       clearInterval(intervalId); // Detener el intervalo actual (si lo hay)
       intervalId = setInterval(() => {
         setMovement((prevMovement) => moverArriba(prevMovement));
-      }, 100); // Iniciar intervalo de movimiento
+      }, 50); // Iniciar intervalo de movimiento
     };
 
     const handleMouseUp = () => {
       clearInterval(intervalId); // Detener el intervalo actual (si lo hay)
       intervalId = setInterval(() => {
         setMovement((prevMovement) => moverAbajo(prevMovement));
-      }, 100);
+      }, 50);
     };
 
     // Agrega event listeners para los eventos del ratón
@@ -62,10 +62,6 @@ function Nave(){
     };
   }, []);
 
-  useEffect(() => {
-    console.log("Valor actual de movement:", movement);
-  }, [movement]);
-
   return (
     <div className="nave" style={{ transform: `translateY(-${movement}px)` }}>
         <img src={logo1} alt="Logo 1" />
@@ -76,7 +72,8 @@ function Nave(){
 
 function NavModes({ onSelect }) {
     return (
-      <div className="btn-group w-50" role="group" aria-label="Basic outlined example" style={{ height: "150px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <div className="btn-group w-50" role="group" aria-label="Basic outlined example" style={{ height: "150px",
+       display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <button
           type="button"
           className="btn btn-outline-primary"
@@ -91,21 +88,80 @@ function NavModes({ onSelect }) {
         >
           Nave
         </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => onSelect("ufo")}
+        >
+          UFO
+        </button>
       </div>
     );
   }    
+
+function Ufo(){
+    const [movement, setMovement] = useState(0);
+
+    useEffect(() => {
+
+      let intervalId;
+
+      function subirUfo(prevMovement){
+        let newMovement
+        newMovement = prevMovement + 40
+        newMovement = Math.max(0, Math.min(400, newMovement));
+        return newMovement;
+      }
+
+      const handleClick = () => {
+        setMovement((prevMovement)=>subirUfo(prevMovement))
+      };
+
+      function bajarUfo(prevMovement) {
+        let newMovement = prevMovement - 10;
+        newMovement = Math.max(0, Math.min(400, newMovement));
+        return newMovement;
+      }
+  
+      intervalId = setInterval(() => {
+        setMovement((prevMovement) => bajarUfo(prevMovement));
+      }, 100);
+
+      // Agrega event listeners para los eventos del ratón
+      document.addEventListener("click", handleClick);
+  
+      // Limpia el intervalo y los event listeners al desmontar el componente
+      return () => {
+        document.removeEventListener("click", handleClick);
+        clearInterval(intervalId);
+      };
+    }, []);
+
+    useEffect(()=>{
+      console.log(`El valor de movement: %d`,movement)
+    },[movement])
+
+    return(
+        <div className="ufo" style={{ transform: `translateY(-${movement}px)` }}>
+            <img src={logo1} alt="Logo 1" />
+            <img src={ufo1} alt="ufo 1" />
+        </div>
+    )
+  }
 
   export function Player() {
     const [selectedMode, setSelectedMode] = useState(null);
   
     return (
       <>
-        {selectedMode != null &&  <button className="btn-menu" aria-label="Basic outlined example" onClick={()=>setSelectedMode(null)}>Volver Menu</button>}
+        {selectedMode != null &&  
+        <button className="btn-menu" aria-label="Basic outlined example" onClick={()=>setSelectedMode(null)}>Volver Menu</button>}
         {selectedMode === null && (
           <NavModes onSelect={(mode) => setSelectedMode(mode)} />
         )}
         {selectedMode === "cubo" && <Cubo />}
         {selectedMode === "nave" && <Nave />}
+        {selectedMode === "ufo" && <Ufo />}
       </>
     );
   }

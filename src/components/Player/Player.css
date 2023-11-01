@@ -43,6 +43,31 @@
     width: 100%;
 }
 
+.ufo{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    z-index: 10;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) all;
+}
+
+.ufo img:nth-child(1){
+    position: absolute;
+    top: 80px;
+    left: 55px;
+    background-color: aqua;
+    width: 45%;
+    border: 2px solid black;
+    z-index: 15;
+    border-radius: 15px 15px 30px 30px;
+}
+
+.ufo img:nth-child(2){
+    position: absolute;
+    bottom: -70px;
+    width: 100%;
+}
+
 @keyframes saltar {
     0%{
         transform: translate(0) rotate(0deg);
